@@ -114,6 +114,12 @@ public class Grafo {
         return null;
     }
     
+    /**
+     * Método responsavel por excluir um aresta com as coordenadas
+     * dos seus vertices
+     * @param v1
+     * @param v2 
+     */
     public void removerAresta( Vertice v1, Vertice v2 )
     {
         if(!verificaVertice(v1))

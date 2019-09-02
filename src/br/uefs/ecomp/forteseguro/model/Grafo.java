@@ -14,6 +14,7 @@
  */
 package br.uefs.ecomp.forteseguro.model;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
@@ -39,20 +40,16 @@ public class Grafo {
      * onde arestas = arraydeque<vertice>
      * para obter a vizinhança do vertice 0, usamos adj.get(0)
      */
-    //private final HashMap<String, ArrayDeque<Vertice>> adj;
     private final List<Vertice> adj;
 
     /**
      * Cria um grafo vazio
      */
-    public Grafo() {
+    public Grafo() 
+    {
         this.numArestas = 0;
         this.numVertices = 0;
         this.adj = new ArrayList<>();
-        
-        /*for (int i=0;i<n;i++){
-            adj.put(String.valueOf(i), new ArrayDeque<Integer>());
-        }*/
     }
     
     /**
@@ -65,14 +62,84 @@ public class Grafo {
     {
         if(!verificaVertice(u))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
+        
         if(!verificaVertice(v))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
         
         numArestas++;//contagem de arestas
         
-        this.get(u.getNome()).getListaAdjacencias().add( new Aresta(peso, v) );//aresta (u,v)
+        this.get( u.getNome() ).getListaAdjacencias().add( new Aresta(peso, v) );//aresta (u,v)
         
-        this.get(v.getNome()).getListaAdjacencias().add( new Aresta(peso, u) );//aresta (v,u)
+        this.get( v.getNome() ).getListaAdjacencias().add( new Aresta(peso, u) );//aresta (v,u)
+    }
+    
+    /**
+     * Método responsavel por excluir um vertice do grafo e todas as suas arestas tanto no vertice
+     * excluido quanto nos vertices que são adjacentes a ele
+     * @param v
+     * @return 
+     */
+    public Vertice removerVertice( Vertice v )
+    {
+        List<Vertice> vertices = this.adj;
+        int pos = 0;
+        
+        for( Vertice vertice : vertices )
+        {
+            if( vertice == v )
+            {               
+                Deque<Aresta> listaAdj = vertice.getListaAdjacencias();
+                
+                for( Aresta aresta : listaAdj )
+                {
+                    Vertice verticeDestino = aresta.getVerticeDestino();
+                    Deque<Aresta> listaAdjDestino = verticeDestino.getListaAdjacencias();
+                    
+                    for( Aresta a : listaAdjDestino )
+                    {
+                        if( a.getVerticeDestino() == verticeDestino )
+                        {
+                            verticeDestino.getListaAdjacencias().remove(a);
+                            break;
+                        }
+                    }
+                }
+                
+                Vertice remove = this.adj.remove(pos);
+                return remove;
+            }
+            pos++;
+        }
+        
+        return null;
+    }
+    
+    public void removerAresta( Vertice v1, Vertice v2 )
+    {
+        if(!verificaVertice(v1))
+            throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
+        
+        if(!verificaVertice(v2))
+            throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
+        
+        Deque<Aresta> listaAdj = v1.getListaAdjacencias();
+        
+        for( Aresta aresta : listaAdj ){
+            if( aresta.getVerticeDestino() == v2 )
+            {
+                v1.getListaAdjacencias().remove(aresta);
+                break;
+            }
+        }
+        
+        listaAdj = v2.getListaAdjacencias();
+        for( Aresta aresta : listaAdj ){
+            if( aresta.getVerticeDestino() == v1 )
+            {
+                v2.getListaAdjacencias().remove(aresta);
+                break;
+            }
+        }
     }
 
     /**
@@ -111,6 +178,7 @@ public class Grafo {
         for(Vertice vertice : vertices )
             if( vertice.getNome().equals(name) )
                     return vertice;
+        
         return null;
     }
 

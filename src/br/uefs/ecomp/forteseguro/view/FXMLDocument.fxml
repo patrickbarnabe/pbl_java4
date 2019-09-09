@@ -37,7 +37,7 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="edt_peso_listAdj" alignment="CENTER" layoutX="196.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Peso" />
+                        <TextField fx:id="edt_peso_listAdj" accessibleText="Insira um valor positivo e maior que zero" alignment="CENTER" layoutX="196.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Peso" />
                         <TextField fx:id="edt_destino_listAdj" alignment="CENTER" layoutX="322.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Destino" />
                         <TextField fx:id="edt_inserir_verticeTipo" alignment="CENTER" layoutX="195.0" layoutY="127.0" prefHeight="25.0" prefWidth="280.0" promptText="Tipo" />
                         <Label layoutX="243.0" layoutY="51.0" text="Cadastrar Pontos e Ligações">
@@ -47,7 +47,7 @@
                         </Label>
                         <Button fx:id="btn_inserirVertice" layoutX="261.0" layoutY="243.0" mnemonicParsing="false" onAction="#inserirVertice" prefHeight="25.0" prefWidth="150.0" text="Inserir" />
                         <TextField fx:id="edt_inserir_verticeNome" alignment="CENTER" layoutX="196.0" layoutY="91.0" prefHeight="25.0" prefWidth="280.0" promptText="Nome" />
-                        <Label layoutX="260.0" layoutY="167.0" text="Inserir Adjacencias (Opcional)" />
+                        <Label layoutX="260.0" layoutY="167.0" text="Inserir Ligações (Opcional)" />
                         <Button fx:id="btn_inserirAdj" layoutX="450.0" layoutY="192.0" mnemonicParsing="false" onAction="#inserirAdj" prefHeight="17.0" prefWidth="18.0" text="+">
                            <font>
                               <Font name="System Bold" size="12.0" />
@@ -62,16 +62,16 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField alignment="CENTER" layoutX="126.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Origem" />
-                        <TextField alignment="CENTER" layoutX="271.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Destino" />
+                        <TextField fx:id="edt_remover_verticeOrigem" alignment="CENTER" layoutX="126.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Origem" />
+                        <TextField fx:id="edt_remover_verticeDestino" alignment="CENTER" layoutX="271.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Destino" />
                         <Label layoutX="260.0" layoutY="35.0" text="Remover Pontos e Ligações">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btn_removerVertice" layoutX="425.0" layoutY="108.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Remover Ponto" />
-                        <TextField alignment="CENTER" layoutX="126.0" layoutY="108.0" prefHeight="25.0" prefWidth="278.0" promptText="Nome do Ponto" />
-                        <Button fx:id="btn_removerAresta" layoutX="425.0" layoutY="181.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Remover Ligação" />
+                        <Button fx:id="btn_removerVertice" layoutX="425.0" layoutY="108.0" mnemonicParsing="false" onAction="#removerVertice" prefHeight="25.0" prefWidth="150.0" text="Remover Ponto" />
+                        <TextField fx:id="edt_remover_nomeVertice" alignment="CENTER" layoutX="126.0" layoutY="108.0" prefHeight="25.0" prefWidth="278.0" promptText="Nome do Ponto" />
+                        <Button fx:id="btn_removerAresta" layoutX="425.0" layoutY="181.0" mnemonicParsing="false" onAction="#removerAresta" prefHeight="25.0" prefWidth="150.0" text="Remover Ligação" />
                         <Label layoutX="126.0" layoutY="71.0" text="Remover Ponto">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -90,9 +90,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField alignment="CENTER" layoutX="39.0" layoutY="65.0" prefHeight="25.0" prefWidth="135.0" promptText="Estacionamento" />
-                        <TextField alignment="CENTER" layoutX="188.0" layoutY="65.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
-                        <Button layoutX="484.0" layoutY="65.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
+                        <TextField alignment="CENTER" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
+                        <Button layoutX="332.0" layoutY="69.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
                         <Label layoutX="39.0" layoutY="111.0" text="Caminho:">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -104,7 +103,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField alignment="CENTER" layoutX="336.0" layoutY="65.0" prefHeight="25.0" prefWidth="135.0" promptText="Banco" />
+                        <TextField alignment="CENTER" layoutX="184.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Banco" />
                      </children>
                   </AnchorPane>
                </content>

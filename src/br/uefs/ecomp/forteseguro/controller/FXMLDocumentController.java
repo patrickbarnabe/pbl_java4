@@ -38,7 +38,10 @@ public class FXMLDocumentController implements Initializable {
     private Button btn_inserirVertice, btn_inserirAdj, btn_removerAresta, btn_removerVertice;
     
     @FXML
-    private TextField edt_peso_listAdj, edt_destino_listAdj, edt_inserir_verticeNome, edt_inserir_verticeTipo;
+    private TextField edt_peso_listAdj, edt_destino_listAdj, 
+            edt_inserir_verticeNome, edt_inserir_verticeTipo, 
+            edt_remover_nomeVertice, edt_remover_verticeDestino,
+            edt_remover_verticeOrigem;
     
     @FXML
     private Label txt_arestas;
@@ -77,7 +80,7 @@ public class FXMLDocumentController implements Initializable {
     {
         if( !edt_destino_listAdj.getText().isEmpty() && !edt_peso_listAdj.getText().isEmpty() )
         {
-            if( grafo.get(edt_destino_listAdj.getText()) != null )
+            if( grafo.get(edt_destino_listAdj.getText()) != null && Integer.parseInt(edt_peso_listAdj.getText()) > 0 )
             {
                 Vertice v = grafo.get(edt_destino_listAdj.getText());
                 int peso = Integer.parseInt(edt_peso_listAdj.getText());
@@ -87,6 +90,8 @@ public class FXMLDocumentController implements Initializable {
                 edt_peso_listAdj.clear();
                 edt_destino_listAdj.clear();
             }
+            else if ( Integer.parseInt(edt_peso_listAdj.getText()) <= 0  )
+                Alerts.showAlert("Error", null, "Insira um valor inteiro positivo no campo Peso", Alert.AlertType.ERROR);
             else
                 Alerts.showAlert("Error Vertice Destino", null, "Vertice de destino não existente", Alert.AlertType.ERROR);
         }
@@ -101,7 +106,40 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void removerAresta(ActionEvent event) 
     {
-        
+        if( !edt_remover_verticeOrigem.getText().isEmpty() && !edt_remover_verticeDestino.getText().isEmpty())
+        {
+            if( grafo.get( edt_remover_verticeOrigem.getText() ) != null && grafo.get( edt_remover_verticeDestino.getText() ) != null  )
+            {
+                Vertice v1 = grafo.get( edt_remover_verticeOrigem.getText() );
+                Vertice v2 = grafo.get( edt_remover_verticeDestino.getText() );
+                grafo.removerAresta(v1, v2);
+                edt_remover_verticeOrigem.clear();
+                edt_remover_verticeDestino.clear();
+            }
+            else if( grafo.get( edt_remover_verticeOrigem.getText() ) == null )
+                Alerts.showAlert("Error Vertice", null, "O ponto de Origem não existe", Alert.AlertType.ERROR);
+            else if( grafo.get( edt_remover_verticeDestino.getText() ) == null )
+                Alerts.showAlert("Error Vertice", null, "O ponto de Destino não existe", Alert.AlertType.ERROR);
+        }
+        else if( edt_remover_verticeOrigem.getText().isEmpty() )
+            Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Vertice Origem", Alert.AlertType.ERROR);
+        else if( edt_remover_verticeDestino.getText().isEmpty() )
+            Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Vertice Destino", Alert.AlertType.ERROR);
+    }
+    
+    @FXML
+    private void removerVertice(ActionEvent event) 
+    {
+        if( !edt_remover_nomeVertice.getText().isEmpty() && grafo.get( edt_remover_nomeVertice.getText() ) != null )
+        {
+            Vertice v = grafo.get( edt_remover_nomeVertice.getText() );
+            grafo.removerVertice( v );
+            edt_remover_nomeVertice.clear();
+        }
+        else if( edt_remover_nomeVertice.getText().isEmpty() )
+            Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Nome do Vertice", Alert.AlertType.ERROR);
+        else
+            Alerts.showAlert("Error Vertice", null, "O ponto não existe", Alert.AlertType.ERROR);
     }
     
     @FXML

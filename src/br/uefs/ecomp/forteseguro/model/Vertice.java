@@ -7,6 +7,8 @@ package br.uefs.ecomp.forteseguro.model;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -16,12 +18,12 @@ public class Vertice {
     
     private String tipo;
     private String nome;
-    private Deque<Aresta> listaAdjacencias;
+    private List<Aresta> listaAdjacencias;
 
     public Vertice(String tipo, String nome) {
         this.tipo = tipo;
         this.nome = nome;
-        this.listaAdjacencias = new ArrayDeque<>();
+        this.listaAdjacencias = new LinkedList<>();
     }
 
     public String getTipo() {
@@ -40,11 +42,11 @@ public class Vertice {
         this.nome = nome;
     }
 
-    public Deque<Aresta> getListaAdjacencias() {
+    public List<Aresta> getListaAdjacencias() {
         return listaAdjacencias;
     }
 
-    public void setListaAdjacencias(Deque listaAdjacencias) {
+    public void setListaAdjacencias(List<Aresta> listaAdjacencias) {
         this.listaAdjacencias = listaAdjacencias;
     }
     

@@ -35,11 +35,13 @@ public class Grafo {
     private int numArestas;
     
     /**
-     * Ao invés de utilizar array, vamos usar um hashmap<vertice, arestas>
-     * onde arestas = arraydeque<vertice>
-     * para obter a vizinhança do vertice 0, usamos adj.get(0)
+     * Lista com os vertices pertencetes ao grafo
      */
     private final List<Vertice> adj;
+
+    public List<Vertice> getAdj() {
+        return adj;
+    }
 
     /**
      * Cria um grafo vazio
@@ -49,6 +51,19 @@ public class Grafo {
         this.numArestas = 0;
         this.numVertices = 0;
         this.adj = new ArrayList<>();
+    }
+    
+    public final void adcionaVertice(String nome, String tipo)
+    {
+        Vertice v = new Vertice(tipo, nome);
+        adj.add(v);
+    }
+    
+    public final void adcionaVertice(String nome, String tipo, List<Aresta> arestas)
+    {
+        Vertice v = new Vertice(tipo, nome);
+        v.setListaAdjacencias(arestas);
+        adj.add(v);
     }
     
     /**
@@ -87,12 +102,12 @@ public class Grafo {
         {
             if( vertice == v )
             {               
-                Deque<Aresta> listaAdj = vertice.getListaAdjacencias();
+                List<Aresta> listaAdj = vertice.getListaAdjacencias();
                 
                 for( Aresta aresta : listaAdj )
                 {
                     Vertice verticeDestino = aresta.getVerticeDestino();
-                    Deque<Aresta> listaAdjDestino = verticeDestino.getListaAdjacencias();
+                    List<Aresta> listaAdjDestino = verticeDestino.getListaAdjacencias();
                     
                     for( Aresta a : listaAdjDestino )
                     {
@@ -127,7 +142,7 @@ public class Grafo {
         if(!verificaVertice(v2))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
         
-        Deque<Aresta> listaAdj = v1.getListaAdjacencias();
+        List<Aresta> listaAdj = v1.getListaAdjacencias();
         
         for( Aresta aresta : listaAdj ){
             if( aresta.getVerticeDestino() == v2 )
@@ -152,7 +167,7 @@ public class Grafo {
      * @param v vertice
      * @return lista de adjacencia
      */
-    public Deque<Aresta> adj(Vertice v)
+    public List<Aresta> adj(Vertice v)
     {
         if (!verificaVertice(v))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
@@ -175,7 +190,7 @@ public class Grafo {
      * @param name Recebe uma string com o nome do Vertice
      * @return Retorna o vertice caso ele exista ou null se não existir
      */
-    private Vertice get(String name){
+    public Vertice get(String name){
         
         List<Vertice> vertices = this.adj;
         

@@ -17,13 +17,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="317.0">
                      <children>
-                        <TextField alignment="CENTER" layoutX="96.0" layoutY="173.0" prefHeight="25.0" prefWidth="398.0" promptText="Nome do Arquivo" />
+                        <TextField fx:id="edt_nomeArquivo" alignment="CENTER" layoutX="96.0" layoutY="173.0" prefHeight="25.0" prefWidth="398.0" promptText="Nome do Arquivo" />
                         <Button fx:id="btn_inserirArquivo" layoutX="511.0" layoutY="173.0" mnemonicParsing="false" onAction="#inserirArquivo" text="Inserir Arquivo" />
-                        <Label layoutX="35.0" layoutY="176.0" text="Início">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
                         <Label layoutX="20.0" layoutY="24.0" text="Forte Seguros">
                            <font>
                               <Font name="System Bold Italic" size="24.0" />
@@ -90,20 +85,20 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField alignment="CENTER" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
-                        <Button layoutX="332.0" layoutY="69.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
-                        <Label layoutX="39.0" layoutY="111.0" text="Caminho:">
+                        <TextField fx:id="edt_pontoColeta" alignment="CENTER" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
+                        <Button layoutX="332.0" layoutY="69.0" mnemonicParsing="false" onAction="#calcularMenorCaminho" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
+                        <Label fx:id="txt_nomeCaminhoLabel" layoutX="39.0" layoutY="111.0" text="Caminho:" visible="false">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="39.0" layoutY="145.0" text="Label" />
+                        <Label fx:id="txt_caminho" layoutX="39.0" layoutY="145.0" />
                         <Label layoutX="36.0" layoutY="28.0" text="Caminho entre dois Locais">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField alignment="CENTER" layoutX="184.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Banco" />
+                        <TextField fx:id="edt_pontoBanco" alignment="CENTER" layoutX="184.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Banco" />
                      </children>
                   </AnchorPane>
                </content>

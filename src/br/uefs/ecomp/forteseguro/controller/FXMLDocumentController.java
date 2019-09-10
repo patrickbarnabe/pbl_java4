@@ -8,6 +8,8 @@ package br.uefs.ecomp.forteseguro.controller;
 import br.uefs.ecomp.forteseguro.model.Aresta;
 import br.uefs.ecomp.forteseguro.model.Grafo;
 import br.uefs.ecomp.forteseguro.model.Vertice;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,16 +37,14 @@ public class FXMLDocumentController implements Initializable {
     private Tab tab_inserir, tab_remover, tab_calcular;
     
     @FXML
-    private Button btn_inserirVertice, btn_inserirAdj, btn_removerAresta, btn_removerVertice;
-    
-    @FXML
     private TextField edt_peso_listAdj, edt_destino_listAdj, 
             edt_inserir_verticeNome, edt_inserir_verticeTipo, 
             edt_remover_nomeVertice, edt_remover_verticeDestino,
-            edt_remover_verticeOrigem;
+            edt_remover_verticeOrigem, edt_nomeArquivo,
+            edt_pontoColeta, edt_pontoBanco;
     
     @FXML
-    private Label txt_arestas;
+    private Label txt_arestas, txt_caminho, txt_nomeCaminhoLabel;
     
     @FXML
     private void inserirVertice(ActionEvent event) 
@@ -143,11 +143,44 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    private void inserirArquivo(ActionEvent event) 
+    private void inserirArquivo(ActionEvent event) throws IOException 
     {
-        tab_inserir.setDisable(false);
-        tab_remover.setDisable(false);
-        tab_calcular.setDisable(false);
+        try{
+            if( !edt_nomeArquivo.getText().isEmpty() )
+            {
+                grafo.carregarArquivo(edt_nomeArquivo.getText());
+                tab_inserir.setDisable(false);
+                tab_remover.setDisable(false);
+                tab_calcular.setDisable(false);
+            }
+            else
+                Alerts.showAlert("Error", null, "Campo do nome de arquivo vazio", Alert.AlertType.ERROR);
+        }
+        catch (FileNotFoundException ex) 
+        {
+            Alerts.showAlert("Erro Arquivo", null, "O arquivo não foi encontrado", Alert.AlertType.ERROR);
+        } 
+    }
+    
+    @FXML
+    private void calcularMenorCaminho(ActionEvent event) throws IOException 
+    {
+        if( !edt_pontoColeta.getText().isEmpty() && !edt_pontoBanco.getText().isEmpty() )
+        {
+            if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null )
+            {
+                txt_nomeCaminhoLabel.setVisible(true);
+                txt_caminho.setText( grafo.dijkstra( edt_pontoColeta.getText(), edt_pontoBanco.getText()) );
+            }
+            else if( this.grafo.get(edt_pontoColeta.getText()) == null )
+                Alerts.showAlert("Error", null, "Ponto de coleta não existente", Alert.AlertType.ERROR);
+            else if( this.grafo.get(edt_pontoBanco.getText()) == null )
+                Alerts.showAlert("Error", null, "Ponto do Banco não existente", Alert.AlertType.ERROR);
+        }
+        else if( edt_pontoColeta.getText().isEmpty() )
+            Alerts.showAlert("Error", null, "Campo do nome de coleta vazio", Alert.AlertType.ERROR);
+        else if( edt_pontoBanco.getText().isEmpty() )
+            Alerts.showAlert("Error", null, "Campo do nome do banco vazio", Alert.AlertType.ERROR);
     }
     
     @Override

@@ -14,9 +14,15 @@
  */
 package br.uefs.ecomp.forteseguro.model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -218,6 +224,53 @@ public class Grafo {
     public int getNumArestas ()
     {
         return numArestas;
+    }
+    
+    public void carregarArquivo( String arquivoNome ) throws IOException
+    {
+        File arqgrafo = new File( arquivoNome + ".txt");
+        FileReader rd = new FileReader(arqgrafo);
+        
+        try {
+            BufferedReader buff = new BufferedReader(rd);
+            String linha = "";
+
+            while( linha != "vertices" )
+            {
+                linha = buff.readLine();
+                String[] textoSeparado = linha.split(Pattern.quote(" "));
+                String categoria = textoSeparado[0];
+                String nome = textoSeparado[1];
+                String x = textoSeparado [2];
+                String y = textoSeparado[3];
+                System.out.println(linha);
+                //Vertice vertice = new Vertice(categoria, nome);
+                this.adcionaVertice(categoria, nome);
+            }
+            
+            while( linha != "arestas" )
+            {
+                linha = buff.readLine();
+                String[] textoSeparado = linha.split(Pattern.quote(" "));
+                String origem = textoSeparado[0];
+                String destino = textoSeparado[1];
+                String peso = textoSeparado[2];
+                System.out.println(Arrays.toString(textoSeparado));
+                //Aresta aresta = new Aresta(origem, destino, peso);
+                this.adicionaAresta( this.get(origem), this.get(destino), Integer.parseInt(peso));
+            }
+        } 
+        catch(FileNotFoundException ex) {
+            java.lang.System.out.println("erro no arquivo");
+        } 
+        finally {
+            rd.close();
+        }
+    }
+    
+    public String dijkstra( String v1, String v2 )
+    {
+        return "";
     }
     
 }  

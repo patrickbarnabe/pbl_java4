@@ -19,14 +19,23 @@ package br.uefs.ecomp.forteseguro.model;
  * @author xstri
  */
 public class Aresta {
+
+    public Vertice getVerticeOrigem() {
+        return verticeOrigem;
+    }
+
+    public void setVerticeOrigem(Vertice verticeOrigem) {
+        this.verticeOrigem = verticeOrigem;
+    }
     
     private int peso;
     private Vertice verticeDestino;
     private Vertice verticeOrigem;
 
-    public Aresta(int peso, Vertice v1) {
+    public Aresta(int peso, Vertice v2, Vertice v1) {
         this.peso = peso;
         this.verticeDestino = v1;
+        this.verticeOrigem = v2;
     }
     
     public Aresta(Vertice v2, Vertice v1, int peso) {

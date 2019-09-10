@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import util.Alerts;
+import util.MenorCaminho;
 
 /**
  *
@@ -78,13 +79,14 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void inserirAdj(ActionEvent event) 
     {
-        if( !edt_destino_listAdj.getText().isEmpty() && !edt_peso_listAdj.getText().isEmpty() )
+        if( !edt_destino_listAdj.getText().isEmpty() && !edt_peso_listAdj.getText().isEmpty() && !edt_inserir_verticeNome.getText().isEmpty() )
         {
             if( grafo.get(edt_destino_listAdj.getText()) != null && Integer.parseInt(edt_peso_listAdj.getText()) > 0 )
             {
                 Vertice v = grafo.get(edt_destino_listAdj.getText());
+                Vertice u = grafo.get(edt_inserir_verticeNome.getText());
                 int peso = Integer.parseInt(edt_peso_listAdj.getText());
-                Aresta aresta = new Aresta(peso, v);
+                Aresta aresta = new Aresta(peso, u, v);
                 txt_arestas.setText( txt_arestas.getText() + edt_destino_listAdj.getText() + " -> " + edt_peso_listAdj.getText() + "\n" );
                 this.listTempAdj.add(aresta);
                 edt_peso_listAdj.clear();
@@ -92,6 +94,8 @@ public class FXMLDocumentController implements Initializable {
             }
             else if ( Integer.parseInt(edt_peso_listAdj.getText()) <= 0  )
                 Alerts.showAlert("Error", null, "Insira um valor inteiro positivo no campo Peso", Alert.AlertType.ERROR);
+            else if( edt_inserir_verticeNome.getText().isEmpty() )
+                Alerts.showAlert("Error Vertice Origem", null, "Insira um vertice de origem", Alert.AlertType.ERROR);
             else
                 Alerts.showAlert("Error Vertice Destino", null, "Vertice de destino não existente", Alert.AlertType.ERROR);
         }
@@ -112,7 +116,11 @@ public class FXMLDocumentController implements Initializable {
             {
                 Vertice v1 = grafo.get( edt_remover_verticeOrigem.getText() );
                 Vertice v2 = grafo.get( edt_remover_verticeDestino.getText() );
-                grafo.removerAresta(v1, v2);
+                if( v1.getListaAdjacencias().contains(v2) && v2.getListaAdjacencias().contains(v1) )
+                    grafo.removerAresta(v1, v2);
+                else
+                    Alerts.showAlert("Error Aresta", null, "A ligação não existe", Alert.AlertType.ERROR);
+                
                 edt_remover_verticeOrigem.clear();
                 edt_remover_verticeDestino.clear();
             }
@@ -170,7 +178,9 @@ public class FXMLDocumentController implements Initializable {
             if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null )
             {
                 txt_nomeCaminhoLabel.setVisible(true);
-                txt_caminho.setText( grafo.dijkstra( edt_pontoColeta.getText(), edt_pontoBanco.getText()) );
+                //MenorCaminho m = new MenorCaminho(this.grafo.getAdj(), this.grafo.getListArestas(), this.grafo.get("A"));
+                //txt_caminho.setText( m.Dijkstra("BB").get(0).toString() );
+                //txt_caminho.setText( grafo.dijkstra( edt_pontoColeta.getText(), edt_pontoBanco.getText()) );
             }
             else if( this.grafo.get(edt_pontoColeta.getText()) == null )
                 Alerts.showAlert("Error", null, "Ponto de coleta não existente", Alert.AlertType.ERROR);

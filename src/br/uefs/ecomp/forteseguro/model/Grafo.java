@@ -44,7 +44,8 @@ public class Grafo {
      * Lista com os vertices pertencetes ao grafo
      */
     private final List<Vertice> adj;
-
+    private final List<Aresta> listArestas;
+    
     public List<Vertice> getAdj() {
         return adj;
     }
@@ -57,6 +58,7 @@ public class Grafo {
         this.numArestas = 0;
         this.numVertices = 0;
         this.adj = new ArrayList<>();
+        this.listArestas = new ArrayList<>();
     }
     
     public final void adcionaVertice(String nome, String tipo)
@@ -88,9 +90,13 @@ public class Grafo {
         
         numArestas++;//contagem de arestas
         
-        this.get( u.getNome() ).getListaAdjacencias().add( new Aresta(peso, v) );//aresta (u,v)
+        Aresta a = new Aresta(peso, u, v);
+        Aresta b = new Aresta(peso, v, u);
         
-        this.get( v.getNome() ).getListaAdjacencias().add( new Aresta(peso, u) );//aresta (v,u)
+        this.get( u.getNome() ).getListaAdjacencias().add( a );//aresta (u,v)
+        this.get( v.getNome() ).getListaAdjacencias().add( b );//aresta (v,u)
+        
+        listArestas.add(a);
     }
     
     /**
@@ -166,6 +172,16 @@ public class Grafo {
                 break;
             }
         }
+        
+        for( Aresta aresta : listArestas )
+        {
+            if( aresta.getVerticeDestino() == v1 && aresta.getVerticeOrigem() == v2 || aresta.getVerticeDestino() == v2 && aresta.getVerticeOrigem() == v1 )
+            {
+                this.listArestas.remove(aresta);
+                break;
+            }
+        }
+        
     }
 
     /**
@@ -235,29 +251,40 @@ public class Grafo {
             BufferedReader buff = new BufferedReader(rd);
             String linha = "";
 
-            while( linha != "vertices" )
+            while( true )
             {
                 linha = buff.readLine();
-                String[] textoSeparado = linha.split(Pattern.quote(" "));
-                String categoria = textoSeparado[0];
-                String nome = textoSeparado[1];
-                String x = textoSeparado [2];
-                String y = textoSeparado[3];
-                System.out.println(linha);
-                //Vertice vertice = new Vertice(categoria, nome);
-                this.adcionaVertice(categoria, nome);
+                if(!linha.equals("vertices"))
+                {
+                    String[] textoSeparado = linha.split (Pattern.quote (" "));
+                    String categoria = textoSeparado[0];
+                    String nome = textoSeparado[1];
+                    String x = textoSeparado [2];
+                    String y = textoSeparado[3];
+                    System.out.println(Arrays.toString(textoSeparado));
+                    //Vertice vertice = new Vertice(categoria,nome,x,y);
+                    this.adcionaVertice(nome, categoria);
+                }
+                else
+                    break;
             }
             
-            while( linha != "arestas" )
+            while( true )
             {
                 linha = buff.readLine();
-                String[] textoSeparado = linha.split(Pattern.quote(" "));
-                String origem = textoSeparado[0];
-                String destino = textoSeparado[1];
-                String peso = textoSeparado[2];
-                System.out.println(Arrays.toString(textoSeparado));
-                //Aresta aresta = new Aresta(origem, destino, peso);
-                this.adicionaAresta( this.get(origem), this.get(destino), Integer.parseInt(peso));
+                if(!linha.equals("arestas"))
+                {
+                    String[] textoSeparado = linha.split (Pattern.quote (" "));
+                    String origem = textoSeparado[0];
+                    String destino = textoSeparado[1];
+                    String peso = textoSeparado[2];
+                    System.out.println(Arrays.toString(textoSeparado));
+                    //Aresta aresta = new Aresta(origem,destino,peso);
+                    this.adicionaAresta( this.get(origem), this.get(destino), Integer.parseInt(peso));
+                }   
+                else{
+                    break;
+                }
             }
         } 
         catch(FileNotFoundException ex) {
@@ -267,8 +294,12 @@ public class Grafo {
             rd.close();
         }
     }
+
+    public List<Aresta> getListArestas() {
+        return listArestas;
+    }
     
-    public String dijkstra( String v1, String v2 )
+    public String dijkstra( String start, String finish )
     {
         return "";
     }

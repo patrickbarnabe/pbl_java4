@@ -16,7 +16,16 @@ public class Vertice {
     
     private String tipo;
     private String nome;
+    private boolean visitado;
     private List<Aresta> listaAdjacencias;
+
+    public boolean getVisitado() {
+        return visitado;
+    }
+
+    public void setVisitar(boolean visitado) {
+        this.visitado = visitado;
+    }
 
     public Vertice(String tipo, String nome) {
         this.tipo = tipo;
@@ -46,6 +55,13 @@ public class Vertice {
 
     public void setListaAdjacencias(List<Aresta> listaAdjacencias) {
         this.listaAdjacencias = listaAdjacencias;
+    }
+    
+    /**
+    * Metodo responsavel por visitar o vertice
+    */
+    public void visitar(){
+        this.visitado = true;
     }
     
 }

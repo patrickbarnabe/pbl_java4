@@ -86,7 +86,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="edt_pontoColeta" alignment="CENTER" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
-                        <Button layoutX="332.0" layoutY="69.0" mnemonicParsing="false" onAction="#calcularMenorCaminho" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
+                        <Button fx:id="btn_calcularMenorCaminho" disable="true" layoutX="332.0" layoutY="69.0" mnemonicParsing="false" onAction="#calcularMenorCaminho" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
                         <Label fx:id="txt_nomeCaminhoLabel" layoutX="39.0" layoutY="111.0" text="Caminho:" visible="false">
                            <font>
                               <Font name="System Bold" size="14.0" />

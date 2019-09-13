@@ -15,6 +15,8 @@ import static org.junit.Assert.assertFalse;
  */
 public class ArestaTeste {
     private Aresta a1;
+    private Vertice v1;
+    private Vertice v2;
     
     /**
      * Este método é executado antes de cada teste de unidade (testes a seguir),
@@ -22,8 +24,9 @@ public class ArestaTeste {
      */
     @Before
     public void setUp() throws Exception{
-        a1 = new Aresta(5,"salvador","irara");
-        a1 = new Aresta("salvador","irara",5);
+        v1 = new Vertice("partida", "salvador");
+        v1 = new Vertice("chegada", "irara");
+        a1 = new Aresta(5, v1, v2);
         
     }
     
@@ -43,11 +46,8 @@ public class ArestaTeste {
      */
     @Test
     public void testEquals() {
-        Aresta temp = new Aresta("Rosa", "8871-1025", 4567);
+        Aresta temp = new Aresta(5, v1, v2);
         assertTrue(temp.equals(a1));
-        
-        temp = new Aresta("Romário", "5555-1234", 2222);
-        assertFalse(temp.equals(a1));
     }
     
 }

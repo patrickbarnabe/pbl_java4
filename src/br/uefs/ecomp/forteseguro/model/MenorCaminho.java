@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package br.uefs.ecomp.forteseguro.model;
 
 import br.uefs.ecomp.forteseguro.model.Aresta;
 import br.uefs.ecomp.forteseguro.model.Grafo;

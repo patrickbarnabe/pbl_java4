@@ -34,12 +34,14 @@ public class Grafo {
     /**
      * numero de vertices
      */
-    private final int numVertices;
+    private int numVertices;
     
     /**
      * numero de arestas
      */
     private int numArestas;
+    
+    private Vertice estacionamento;
     
     /**
      * Lista com os vertices pertencetes ao grafo
@@ -65,14 +67,29 @@ public class Grafo {
     public final void adcionaVertice(String nome, String tipo)
     {
         Vertice v = new Vertice(tipo, nome);
+        
+        if( "estacionamento".equals(tipo.toLowerCase()))
+        {
+            this.setEstacionamento(v);   
+        }
+        
         adj.add(v);
+        this.numVertices++;
     }
     
     public final void adcionaVertice(String nome, String tipo, List<Aresta> arestas)
     {
         Vertice v = new Vertice(tipo, nome);
+        
+        if( "estacionamento".equals(tipo.toLowerCase()) && this.getEstacionamento() == null)
+        {
+            
+            this.setEstacionamento(v);
+        }            
+        
         v.setListaAdjacencias(arestas);
         adj.add(v);
+        this.numVertices++;
     }
     
     /**
@@ -98,6 +115,7 @@ public class Grafo {
         this.get( v.getNome() ).getListaAdjacencias().add( b );//aresta (v,u)
         
         listArestas.add(a);
+        this.numArestas++;
     }
     
     /**
@@ -113,18 +131,18 @@ public class Grafo {
         
         for( Vertice vertice : vertices )
         {
-            if( vertice == v )
+            if( vertice.getNome().toLowerCase().equals(v.getNome().toLowerCase()) && !vertice.getListaAdjacencias().isEmpty() )
             {               
                 List<Aresta> listaAdj = vertice.getListaAdjacencias();
                 
                 for( Aresta aresta : listaAdj )
-                {
+                {                    
                     Vertice verticeDestino = aresta.getVerticeDestino();
                     List<Aresta> listaAdjDestino = verticeDestino.getListaAdjacencias();
-                    
+
                     for( Aresta a : listaAdjDestino )
                     {
-                        if( a.getVerticeDestino() == verticeDestino )
+                        if( a.getVerticeDestino().getNome().equals(verticeDestino.getNome()) )
                         {
                             verticeDestino.getListaAdjacencias().remove(a);
                             break;
@@ -133,6 +151,7 @@ public class Grafo {
                 }
                 
                 Vertice remove = this.adj.remove(pos);
+                this.numVertices--;
                 return remove;
             }
             pos++;
@@ -157,8 +176,9 @@ public class Grafo {
         
         List<Aresta> listaAdj = v1.getListaAdjacencias();
         
-        for( Aresta aresta : listaAdj ){
-            if( aresta.getVerticeDestino() == v2 )
+        for( Aresta aresta : listaAdj )
+        {
+            if( aresta.getVerticeDestino().getNome().equals(v2.getNome()) )
             {
                 v1.getListaAdjacencias().remove(aresta);
                 break;
@@ -166,8 +186,10 @@ public class Grafo {
         }
         
         listaAdj = v2.getListaAdjacencias();
-        for( Aresta aresta : listaAdj ){
-            if( aresta.getVerticeDestino() == v1 )
+        
+        for( Aresta aresta : listaAdj )
+        {
+            if( aresta.getVerticeDestino().getNome().equals(v1.getNome()) )
             {
                 v2.getListaAdjacencias().remove(aresta);
                 break;
@@ -176,12 +198,15 @@ public class Grafo {
         
         for( Aresta aresta : listArestas )
         {
-            if( aresta.getVerticeDestino() == v1 && aresta.getVerticeOrigem() == v2 || aresta.getVerticeDestino() == v2 && aresta.getVerticeOrigem() == v1 )
+            if( aresta.getVerticeDestino().getNome().toLowerCase().equals(v1.getNome().toLowerCase()) && aresta.getVerticeOrigem().getNome().toLowerCase().equals(v2.getNome().toLowerCase()) || 
+                    aresta.getVerticeDestino().getNome().toLowerCase().equals(v2.getNome().toLowerCase()) && aresta.getVerticeOrigem().getNome().toLowerCase().equals(v1.getNome().toLowerCase()) )
             {
                 this.listArestas.remove(aresta);
                 break;
             }
         }
+        
+        this.numArestas--;
         
     }
 
@@ -219,28 +244,10 @@ public class Grafo {
         
         //forEach percorre cada item do ArrayList para procurar o vertice
         for(Vertice vertice : vertices )
-            if( vertice.getNome().equals(name) )
-                    return vertice;
+            if( vertice.getNome().toLowerCase().equals(name.toLowerCase()) )
+                return vertice;
         
         return null;
-    }
-
-    /**
-     * numero de vertices de um grafo
-     * @return 
-     */
-    public int getNumVertices ()
-    {
-        return numVertices;
-    }
-    
-    /**
-     * numero de arestas de um grafo
-     * @return 
-     */
-    public int getNumArestas ()
-    {
-        return numArestas;
     }
     
     public void carregarArquivo( String arquivoNome ) throws IOException
@@ -258,7 +265,16 @@ public class Grafo {
                 if(!linha.equals("vertices"))
                 {
                     String[] textoSeparado = linha.split (Pattern.quote (" "));
-                    String categoria = textoSeparado[0];
+                    
+                    String categoria = "";
+                    
+                    if( Integer.parseInt(textoSeparado[0]) == 0 )
+                        categoria = "estacionamento";
+                    else if( Integer.parseInt(textoSeparado[0]) == 1 )
+                        categoria = "coleta";
+                    else if( Integer.parseInt(textoSeparado[0]) == 2 )
+                        categoria = "banco";
+                    
                     String nome = textoSeparado[1];
                     String x = textoSeparado [2];
                     String y = textoSeparado[3];
@@ -295,15 +311,46 @@ public class Grafo {
             rd.close();
         }
     }
+    
+    public MenorCaminho dijkstra()
+    {
+        if( this.getEstacionamento() != null )
+        {
+            MenorCaminho m = new MenorCaminho(this.getAdj(), this.getListArestas(), this.getEstacionamento());
+            return m;
+        }
+        
+        return null;
+    }
 
     public List<Aresta> getListArestas() {
         return listArestas;
     }
     
-    public String dijkstra( String start, String finish)
+    /**
+     * numero de vertices de um grafo
+     * @return 
+     */
+    public int getNumVertices ()
     {
-        return "";
+        return numVertices;
     }
     
+    /**
+     * numero de arestas de um grafo
+     * @return 
+     */
+    public int getNumArestas ()
+    {
+        return numArestas;
+    }
+    
+    public Vertice getEstacionamento() {
+        return estacionamento;
+    }
+
+    public void setEstacionamento(Vertice estacionamento) {
+        this.estacionamento = estacionamento;
+    }
 }  
    

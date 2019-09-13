@@ -40,12 +40,6 @@ public class Aresta {
         this.verticeDestino = v1;
         this.verticeOrigem = v2;
     }
-    
-    public Aresta(Vertice v2, Vertice v1, int peso) {
-        this.peso = peso;
-        this.verticeDestino = v1;
-        this.verticeOrigem = v2;
-    }
 
     public int getPeso() {
         return peso;

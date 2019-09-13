@@ -7,6 +7,7 @@ package br.uefs.ecomp.forteseguro.controller;
 
 import br.uefs.ecomp.forteseguro.model.Aresta;
 import br.uefs.ecomp.forteseguro.model.Grafo;
+import br.uefs.ecomp.forteseguro.model.MenorCaminho;
 import br.uefs.ecomp.forteseguro.model.Vertice;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +24,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import util.Alerts;
-import util.MenorCaminho;
 
 /**
  *
@@ -36,6 +36,9 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Tab tab_inserir, tab_remover, tab_calcular;
+    
+    @FXML
+    private Button btn_calcularMenorCaminho;
     
     @FXML
     private TextField edt_peso_listAdj, edt_destino_listAdj, 
@@ -56,6 +59,10 @@ public class FXMLDocumentController implements Initializable {
                 grafo.adcionaVertice(edt_inserir_verticeNome.getText().toLowerCase(), edt_inserir_verticeTipo.getText().toLowerCase());
                 this.listTempAdj.clear();
                 txt_arestas.setText("");
+                
+                if( "estacionamento".equals( edt_inserir_verticeTipo.getText().toLowerCase() ) )
+                    btn_calcularMenorCaminho.setDisable(false);
+                
                 edt_inserir_verticeNome.clear();
                 edt_inserir_verticeTipo.clear();
             }
@@ -64,6 +71,10 @@ public class FXMLDocumentController implements Initializable {
                 grafo.adcionaVertice(edt_inserir_verticeNome.getText().toLowerCase(), edt_inserir_verticeTipo.getText().toLowerCase(), this.listTempAdj);
                 this.listTempAdj.clear();
                 txt_arestas.setText("");
+                
+                if( "estacionamento".equals( edt_inserir_verticeTipo.getText().toLowerCase() ) )
+                    btn_calcularMenorCaminho.setVisible(true);
+                
                 edt_inserir_verticeNome.clear();
                 edt_inserir_verticeTipo.clear();
             }
@@ -116,9 +127,21 @@ public class FXMLDocumentController implements Initializable {
             {
                 Vertice v1 = grafo.get( edt_remover_verticeOrigem.getText() );
                 Vertice v2 = grafo.get( edt_remover_verticeDestino.getText() );
-                if( v1.getListaAdjacencias().contains(v2) && v2.getListaAdjacencias().contains(v1) )
-                    grafo.removerAresta(v1, v2);
-                else
+                
+                boolean bool = false;
+                
+                for( Aresta aresta : this.grafo.getListArestas() )
+                {
+                    if( aresta.getVerticeDestino().getNome().toLowerCase().equals(v1.getNome().toLowerCase()) && aresta.getVerticeOrigem().getNome().toLowerCase().equals(v2.getNome().toLowerCase()) || 
+                            aresta.getVerticeDestino().getNome().toLowerCase().equals(v2.getNome().toLowerCase()) && aresta.getVerticeOrigem().getNome().toLowerCase().equals(v1.getNome().toLowerCase()) )
+                    {
+                        grafo.removerAresta(v1, v2);
+                        bool = true;
+                        break;
+                    }
+                }
+                
+                if( bool == false )
                     Alerts.showAlert("Error Aresta", null, "A ligação não existe", Alert.AlertType.ERROR);
                 
                 edt_remover_verticeOrigem.clear();
@@ -155,11 +178,13 @@ public class FXMLDocumentController implements Initializable {
     {
         try{
             if( !edt_nomeArquivo.getText().isEmpty() )
-            {
+            {                
                 grafo.carregarArquivo(edt_nomeArquivo.getText());
                 tab_inserir.setDisable(false);
                 tab_remover.setDisable(false);
                 tab_calcular.setDisable(false);
+                if( "estacionamento".equals(this.grafo.getEstacionamento().getTipo().toLowerCase()) )
+                    btn_calcularMenorCaminho.setDisable(false);
             }
             else
                 Alerts.showAlert("Error", null, "Campo do nome de arquivo vazio", Alert.AlertType.ERROR);
@@ -175,12 +200,18 @@ public class FXMLDocumentController implements Initializable {
     {
         if( !edt_pontoColeta.getText().isEmpty() && !edt_pontoBanco.getText().isEmpty() )
         {
-            if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null )
+            if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null && this.grafo.getEstacionamento() != null )
             {
+                List listColeta = this.grafo.dijkstra().Dijkstra(edt_pontoColeta.getText());
+                List listBanco = this.grafo.dijkstra().Dijkstra(edt_pontoBanco.getText());
+                
+                for( Object coleta : listColeta )
+                    txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );
+                
+                for( Object banco : listBanco )
+                    txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + "\n" );
+                
                 txt_nomeCaminhoLabel.setVisible(true);
-                //MenorCaminho m = new MenorCaminho(this.grafo.getAdj(), this.grafo.getListArestas(), this.grafo.get("A"));
-                //txt_caminho.setText( m.Dijkstra("BB").get(0).toString() );
-                //txt_caminho.setText( grafo.dijkstra( edt_pontoColeta.getText(), edt_pontoBanco.getText()) );
             }
             else if( this.grafo.get(edt_pontoColeta.getText()) == null )
                 Alerts.showAlert("Error", null, "Ponto de coleta não existente", Alert.AlertType.ERROR);

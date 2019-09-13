@@ -14,20 +14,23 @@
  */
 package br.uefs.ecomp.forteseguro.model;
 
-/**
+/*
+* Componente Curricular: Módulo Integrado de Programação II
+ * Autores: <Patrick Barnabé Moreira Santos e Esdras Abreu Silva>
+ * Data:  <23/09/2019>
  *
- * @author xstri
+ * Declaro que este código foi elaborado por mim de forma individual e
+ * não contém nenhum trecho de código de outro colega ou de outro autor, 
+ * tais como provindos de livros e apostilas, e páginas ou documentos 
+ * eletrônicos da Internet. Qualquer trecho de código de outra autoria que
+ * uma citação para o  não a minha está destacado com  autor e a fonte do
+ * código, e estou ciente que estes trechos não serão considerados para fins
+ * de avaliação. Alguns trechos do código podem coincidir com de outros
+ * colegas pois estes foram discutidos em sessões tutorias.
  */
+
 public class Aresta {
 
-    public Vertice getVerticeOrigem() {
-        return verticeOrigem;
-    }
-
-    public void setVerticeOrigem(Vertice verticeOrigem) {
-        this.verticeOrigem = verticeOrigem;
-    }
-    
     private int peso;
     private Vertice verticeDestino;
     private Vertice verticeOrigem;
@@ -59,5 +62,11 @@ public class Aresta {
     public void setVerticeDestino(Vertice v1) {
         this.verticeDestino = v1;
     }
-       
+     public Vertice getVerticeOrigem() {
+        return verticeOrigem;
+    }
+
+    public void setVerticeOrigem(Vertice verticeOrigem) {
+        this.verticeOrigem = verticeOrigem;
+    }   
 }

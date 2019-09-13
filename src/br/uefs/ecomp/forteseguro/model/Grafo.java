@@ -12,6 +12,7 @@
  * de avaliação. Alguns trechos do código podem coincidir com de outros
  * colegas pois estes foram discutidos em sessões tutorias.
  */
+
 package br.uefs.ecomp.forteseguro.model;
 
 import java.io.BufferedReader;
@@ -299,7 +300,7 @@ public class Grafo {
         return listArestas;
     }
     
-    public String dijkstra( String start, String finish )
+    public String dijkstra( String start, String finish)
     {
         return "";
     }

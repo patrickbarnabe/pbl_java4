@@ -28,14 +28,14 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tab_inserir" disable="true" text="Inserir">
+          <Tab fx:id="tab_inserir" text="Inserir">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="edt_peso_listAdj" accessibleText="Insira um valor positivo e maior que zero" alignment="CENTER" layoutX="196.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Peso" />
                         <TextField fx:id="edt_destino_listAdj" alignment="CENTER" layoutX="322.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Destino" />
                         <TextField fx:id="edt_inserir_verticeTipo" alignment="CENTER" layoutX="195.0" layoutY="127.0" prefHeight="25.0" prefWidth="280.0" promptText="Tipo" />
-                        <Label layoutX="243.0" layoutY="51.0" text="Cadastrar Pontos e Ligações">
+                        <Label layoutX="254.0" layoutY="51.0" text="Inserir Pontos e Ligações">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

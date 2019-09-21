@@ -48,19 +48,19 @@ public class MenorCaminho {
     */
     public void menorCaminho2() 
     {
-        //throws ErroCalculoPercursoException
         List<Integer> menoresDistancias = new ArrayList();
         List<Vertice> verticeAnterior = new ArrayList(); 
         List<Vertice> naoVisitados = new ArrayList();
         List<Integer> nuvem = new ArrayList();
-        Vertice atual; 
+        Vertice atual = null; 
         int contador = 0; 
         Vertice menorCaminho = null; 
         List<Vertice> vizinhos = new ArrayList(); 
         int distanciaAnterior = 0;
         int distanciaTemporaria = 0;
-        for(Vertice vertice:this.vertices){
-            
+        
+        for(Vertice vertice : this.vertices)
+        {
             //seta os valores iniciais da distancia e dos vertices.
             menoresDistancias.add(Integer.MAX_VALUE);
             verticeAnterior.add(null);
@@ -69,7 +69,8 @@ public class MenorCaminho {
                 naoVisitados.add(vertice);
             }
             //procura o vertice origem;
-            if(vertice.getNome().equalsIgnoreCase(inicio.getNome())){
+            if(vertice.getNome().equalsIgnoreCase(inicio.getNome()))
+            {
                 inicio = vertice;
                 //Da origem para ela mesma a distancia Ã© 0;
                 menoresDistancias.set(vertices.indexOf(inicio),0);
@@ -81,7 +82,8 @@ public class MenorCaminho {
         } 
 
         //O laÃ§o continua atÃ© todos os vertoces serem visitados.
-        while(!naoVisitados.isEmpty()){
+        while(!naoVisitados.isEmpty())
+        {
             //onde o algortimo vai comeÃ§a,se for a primeira vez comeÃ§a pela origem.
             if(contador == 0){
                 atual = naoVisitados.get(naoVisitados.indexOf(inicio));
@@ -93,42 +95,47 @@ public class MenorCaminho {
                 naoVisitados.remove(naoVisitados.indexOf(menorCaminho)); 
             }
             
-            //visita a origem para o algoritmo saber que esse vertice jÃ¡ foi visitado.
-            inicio.visitar();
-            naoVisitados.remove(inicio);
-            //confere os vertice adjacentes ao vertice atual
-            for(int i =0;i < atual.getListaAdjacencias().size();i++){
-                
-                vizinhos.add(atual.getListaAdjacencias().get(i).getVerticeDestino());
-                //Confere se o vizinho foi visitado.
-                if(!vizinhos.get(i).getVisitado()){
-                    //Confere se a distancia da aresta somado a distancia Ã© menor que o valor contido no vetor de distancias.
-                    if(atual.getListaAdjacencias().get(i).getPeso() + distanciaAnterior < menoresDistancias.get(vertices.indexOf(vizinhos.get(i)))){
-                       //seta a nova distancia.
-                       menoresDistancias.set(vertices.indexOf(vizinhos.get(i)),atual.getListaAdjacencias().get(i).getPeso() + distanciaAnterior); 
-                       //seta por onde o algoritmo deve seguir para ter essa menor distancia.
-                       verticeAnterior.set(vertices.indexOf(vizinhos.get(i)), atual); 
+            if( naoVisitados.indexOf(menorCaminho) >= 0 ){
+                //visita a origem para o algoritmo saber que esse vertice jÃ¡ foi visitado.
+                inicio.visitar();
+                naoVisitados.remove(inicio);
+                //confere os vertice adjacentes ao vertice atual
+                for(int i =0;i < atual.getListaAdjacencias().size(); i++)
+                {
+                    vizinhos.add(atual.getListaAdjacencias().get(i).getVerticeDestino());
+                    //Confere se o vizinho foi visitado.
+                    if(!vizinhos.get(i).getVisitado()){
+                        //Confere se a distancia da aresta somado a distancia Ã© menor que o valor contido no vetor de distancias.
+                        if(atual.getListaAdjacencias().get(i).getPeso() + distanciaAnterior < menoresDistancias.get(vertices.indexOf(vizinhos.get(i)))){
+                           //seta a nova distancia.
+                           menoresDistancias.set(vertices.indexOf(vizinhos.get(i)),atual.getListaAdjacencias().get(i).getPeso() + distanciaAnterior); 
+                           //seta por onde o algoritmo deve seguir para ter essa menor distancia.
+                           verticeAnterior.set(vertices.indexOf(vizinhos.get(i)), atual); 
+                        }
+                    } 
+                } 
+
+                //Limpa a lista de vizinhos pois os mesmo nÃ£o serÃ£o mais usados.
+                vizinhos.clear();
+
+                if(!naoVisitados.isEmpty())
+                { 
+                    //encontra o menor valor da lista de distancias que ainda nÃ£o foi utilizado.
+                    int k = menorDistancia(menoresDistancias,nuvem);
+                    if( k >= 0 ){
+                        distanciaTemporaria = menoresDistancias.get(k);                
+                        menorCaminho = vertices.get(k);  
+                        /*adiciona o indice do menor valor em uma lista separada,para diferenciar as distancias utilizadas e nÃ£o
+                        utilizadas*/
+                        nuvem.add(k);            
+                        atual.visitar();
+                        distanciaAnterior = distanciaTemporaria; 
                     }
                 } 
-            } 
+                //variavel utilizada para diferenciar o primeiro loop;
+                contador++; 
+            }
             
-            //Limpa a lista de vizinhos pois os mesmo nÃ£o serÃ£o mais usados.
-            vizinhos.clear();
-
-            if(!naoVisitados.isEmpty())
-            { 
-                //encontra o menor valor da lista de distancias que ainda nÃ£o foi utilizado.
-                int k = menorDistancia(menoresDistancias,nuvem);
-                distanciaTemporaria = menoresDistancias.get(k);                
-                menorCaminho = vertices.get(k);  
-                /*adiciona o indice do menor valor em uma lista separada,para diferenciar as distancias utilizadas e nÃ£o
-                utilizadas*/
-                nuvem.add(k);            
-                atual.visitar();
-                distanciaAnterior = distanciaTemporaria; 
-            } 
-            //variavel utilizada para diferenciar o primeiro loop;
-            contador++; 
         }
         
         this.menorPercurso = verticeAnterior; 
@@ -161,6 +168,7 @@ public class MenorCaminho {
         if(posicao==-1){
             throw new ErroCalculoPercursoException(); throws ErroCalculoPercursoException
         }*/
+        
         return posicao;
     } 
     

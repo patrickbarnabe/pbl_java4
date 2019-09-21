@@ -38,7 +38,7 @@ public class FXMLDocumentController implements Initializable {
     private Tab tab_inserir, tab_remover, tab_calcular;
     
     @FXML
-    private Button btn_calcularMenorCaminho;
+    private Button btn_calcularMenorCaminho, btn_inserirAdj;
     
     @FXML
     private TextField edt_peso_listAdj, edt_destino_listAdj, 
@@ -53,16 +53,24 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void inserirVertice(ActionEvent event) 
     {
-        if( !edt_inserir_verticeNome.getText().isEmpty() && !edt_inserir_verticeTipo.getText().isEmpty() )
-            if( this.listTempAdj.isEmpty() )
+        if( !edt_inserir_verticeNome.getText().isEmpty() )
+            if( this.listTempAdj.isEmpty() && !edt_inserir_verticeTipo.getText().isEmpty() )
             {
-                grafo.adcionaVertice(edt_inserir_verticeNome.getText().toLowerCase(), edt_inserir_verticeTipo.getText().toLowerCase());
-                this.listTempAdj.clear();
-                txt_arestas.setText("");
+                Vertice v = new Vertice(edt_inserir_verticeTipo.getText().toLowerCase(), edt_inserir_verticeNome.getText().toLowerCase() );
+                if( grafo.verificaVertice(v) == false )
+                {
+                    grafo.adcionaVertice( v.getNome(), v.getTipo() );
+                    this.listTempAdj.clear();
+                    txt_arestas.setText("");
+
+                    if( "estacionamento".equals( edt_inserir_verticeTipo.getText().toLowerCase() ) )
+                        btn_calcularMenorCaminho.setDisable(false);
+                }
+                else
+                    Alerts.showAlert("Error", null, "Vertice já existente", Alert.AlertType.ERROR);
                 
-                if( "estacionamento".equals( edt_inserir_verticeTipo.getText().toLowerCase() ) )
-                    btn_calcularMenorCaminho.setDisable(false);
-                
+                btn_inserirAdj.setDisable(false);
+                tab_remover.setDisable(false);
                 edt_inserir_verticeNome.clear();
                 edt_inserir_verticeTipo.clear();
             }
@@ -75,6 +83,8 @@ public class FXMLDocumentController implements Initializable {
                 if( "estacionamento".equals( edt_inserir_verticeTipo.getText().toLowerCase() ) )
                     btn_calcularMenorCaminho.setVisible(true);
                 
+                btn_inserirAdj.setDisable(false);
+                tab_remover.setDisable(false);
                 edt_inserir_verticeNome.clear();
                 edt_inserir_verticeTipo.clear();
             }
@@ -92,7 +102,7 @@ public class FXMLDocumentController implements Initializable {
     {
         if( !edt_destino_listAdj.getText().isEmpty() && !edt_peso_listAdj.getText().isEmpty() && !edt_inserir_verticeNome.getText().isEmpty() )
         {
-            if( grafo.get(edt_destino_listAdj.getText()) != null && Integer.parseInt(edt_peso_listAdj.getText()) > 0 )
+            if( !edt_destino_listAdj.getText().equals(edt_inserir_verticeNome.getText()) && grafo.get(edt_destino_listAdj.getText()) != null && grafo.get(edt_inserir_verticeNome.getText()) != null && Integer.parseInt(edt_peso_listAdj.getText()) > 0 )
             {
                 Vertice v = grafo.get(edt_destino_listAdj.getText());
                 Vertice u = grafo.get(edt_inserir_verticeNome.getText());
@@ -100,18 +110,26 @@ public class FXMLDocumentController implements Initializable {
                 Aresta aresta = new Aresta(peso, u, v);
                 txt_arestas.setText( txt_arestas.getText() + edt_destino_listAdj.getText() + " -> " + edt_peso_listAdj.getText() + "\n" );
                 this.listTempAdj.add(aresta);
+                
+                if( grafo.verificaVertice(u) == true )
+                    btn_inserirAdj.setDisable(true);
+                
                 edt_peso_listAdj.clear();
                 edt_destino_listAdj.clear();
             }
-            else if ( Integer.parseInt(edt_peso_listAdj.getText()) <= 0  )
+            else if ( edt_destino_listAdj.getText().equals(edt_inserir_verticeNome.getText())  )
+                Alerts.showAlert("Error", null, "Insira vertices de origem e destino diferente", Alert.AlertType.ERROR);
+            else if ( Integer.parseInt( edt_peso_listAdj.getText()) <= 0  )
                 Alerts.showAlert("Error", null, "Insira um valor inteiro positivo no campo Peso", Alert.AlertType.ERROR);
-            else if( edt_inserir_verticeNome.getText().isEmpty() )
-                Alerts.showAlert("Error Vertice Origem", null, "Insira um vertice de origem", Alert.AlertType.ERROR);
+            else if( grafo.get(edt_inserir_verticeNome.getText()) == null )
+                Alerts.showAlert("Error Vertice Origem", null, "Vertice de origem não existente", Alert.AlertType.ERROR);
             else
                 Alerts.showAlert("Error Vertice Destino", null, "Vertice de destino não existente", Alert.AlertType.ERROR);
         }
         else if( edt_peso_listAdj.getText().isEmpty() && edt_destino_listAdj.getText().isEmpty() )
             Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para cada um dos campos de texto Peso e Destino", Alert.AlertType.ERROR);
+        else if( edt_inserir_verticeNome.getText().isEmpty() )
+                Alerts.showAlert("Error Vertice Origem", null, "Insira um vertice de origem", Alert.AlertType.ERROR);
         else if( edt_destino_listAdj.getText().isEmpty() )
             Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Destino", Alert.AlertType.ERROR);
         else if( edt_peso_listAdj.getText().isEmpty() )

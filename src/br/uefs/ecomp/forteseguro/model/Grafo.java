@@ -73,7 +73,7 @@ public class Grafo {
             this.setEstacionamento(v);   
         }
         
-        adj.add(v);
+        this.adj.add(v);
         this.numVertices++;
     }
     
@@ -83,12 +83,11 @@ public class Grafo {
         
         if( "estacionamento".equals(tipo.toLowerCase()) && this.getEstacionamento() == null)
         {
-            
             this.setEstacionamento(v);
         }            
         
         v.setListaAdjacencias(arestas);
-        adj.add(v);
+        this.adj.add(v);
         this.numVertices++;
     }
     
@@ -106,15 +105,13 @@ public class Grafo {
         if(!verificaVertice(v))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
         
-        numArestas++;//contagem de arestas
-        
         Aresta a = new Aresta(peso, u, v);
         Aresta b = new Aresta(peso, v, u);
         
-        this.get( u.getNome() ).getListaAdjacencias().add( a );//aresta (u,v)
-        this.get( v.getNome() ).getListaAdjacencias().add( b );//aresta (v,u)
+        this.get( u.getNome() ).getListaAdjacencias().add( 0, a );//aresta (u,v)
+        this.get( v.getNome() ).getListaAdjacencias().add( 0, b );//aresta (v,u)
         
-        listArestas.add(a);
+        this.listArestas.add(a);
         this.numArestas++;
     }
     
@@ -131,7 +128,7 @@ public class Grafo {
         
         for( Vertice vertice : vertices )
         {
-            if( vertice.getNome().toLowerCase().equals(v.getNome().toLowerCase()) && !vertice.getListaAdjacencias().isEmpty() )
+            if( vertice.getNome().toLowerCase().equals(v.getNome().toLowerCase()))
             {               
                 List<Aresta> listaAdj = vertice.getListaAdjacencias();
                 

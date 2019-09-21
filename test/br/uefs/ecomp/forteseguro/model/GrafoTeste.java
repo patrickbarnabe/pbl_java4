@@ -45,14 +45,16 @@ public class GrafoTeste
     public void testInserirVertice() 
     {
         grafo.adcionaVertice(v1.getNome(), v1.getTipo());
-        grafo.adcionaVertice(v2.getNome(), v2.getTipo());
-        grafo.adcionaVertice(v3.getNome(), v3.getTipo());
         
         assertEquals(v1.getNome(), grafo.get("A").getNome());
         assertEquals(v1.getTipo(), grafo.get("A").getTipo());
         
+        grafo.adcionaVertice(v2.getNome(), v2.getTipo());
+        
         assertEquals(v2.getNome(), grafo.get("B").getNome());
         assertEquals(v2.getTipo(), grafo.get("B").getTipo());
+        
+        grafo.adcionaVertice(v3.getNome(), v3.getTipo());
         
         assertEquals(v3.getNome(), grafo.get("C").getNome());
         assertEquals(v3.getTipo(), grafo.get("C").getTipo());
@@ -108,9 +110,21 @@ public class GrafoTeste
     {
         this.testInserirAresta();
         
-        grafo.removerAresta(v1, v2);
+        grafo.removerAresta(v1, v2);        
         grafo.removerAresta(v3, v1);
         grafo.removerAresta(v3, v2);
+        
+    }
+    
+    /**
+     * Teste resposavel por verificar o menor caminho entre dois vertices
+     */
+    @Test
+    public void testMenorCaminho() 
+    {
+        this.testInserirAresta();
+        
+        grafo.dijkstra();
         
     }
     

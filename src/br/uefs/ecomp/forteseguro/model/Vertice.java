@@ -14,6 +14,7 @@
  */
 package br.uefs.ecomp.forteseguro.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Vertice {
     public Vertice(String tipo, String nome) {
         this.tipo = tipo;
         this.nome = nome;
-        this.listaAdjacencias = new LinkedList<>();
+        this.listaAdjacencias = new ArrayList<>();
     }
 
     public String getTipo() {

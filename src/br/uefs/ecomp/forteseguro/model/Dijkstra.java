@@ -86,7 +86,7 @@ public class Dijkstra {
      * @param verticeDestino vertice que deseja chegar
      * @return peso da aresta
      */
-    private int getDistancia(Vertice verticeOrigem, Vertice verticeDestino) {
+    public int getDistancia(Vertice verticeOrigem, Vertice verticeDestino) {
         for (Aresta arestaAuxiliar : this.listadeArestas) {
             if (arestaAuxiliar.getVerticeOrigem().equals(verticeOrigem) && arestaAuxiliar.getVerticeDestino().equals(verticeDestino)) {
                 return arestaAuxiliar.getPeso();
@@ -161,14 +161,14 @@ public class Dijkstra {
      * @param vertice vertice
      * @return lista de vertices do caminho percorrido
      */
-    public List<List<Vertice>> getCaminho(ArrayList<Vertice> listVertices, Vertice vertice) {
+    public List<List<Vertice>> getCaminho(List<Vertice> listVertices, Vertice vertice) {
         if (listVertices == null) {
             listVertices = new ArrayList<>();
         }
         
-        ArrayList<Vertice> caminho = new ArrayList<>(listVertices);
+        List<Vertice> caminho = new ArrayList<>(listVertices);
         Vertice auxVertice = vertice;
-        ArrayList<Vertice> auxListVertice;
+        List<Vertice> auxListVertice;
 
         if (this.anteriores.get(auxVertice) == null) {
             return null;

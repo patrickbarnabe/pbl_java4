@@ -53,9 +53,10 @@ public class MenorCaminho {
         List<Vertice> naoVisitados = new ArrayList();
         List<Integer> nuvem = new ArrayList();
         Vertice atual = null; 
-        int contador = 0; 
         Vertice menorCaminho = null; 
         List<Vertice> vizinhos = new ArrayList(); 
+        
+        int contador = 0; 
         int distanciaAnterior = 0;
         int distanciaTemporaria = 0;
         
@@ -73,9 +74,9 @@ public class MenorCaminho {
             {
                 inicio = vertice;
                 //Da origem para ela mesma a distancia Ã© 0;
-                menoresDistancias.set(vertices.indexOf(inicio),0);
+                menoresDistancias.set(vertices.indexOf(inicio), 0);
                 //vertice anterior Ã© a propria origem;
-                verticeAnterior.set(0,inicio);
+                verticeAnterior.set(0, inicio);
                 nuvem.add(vertices.indexOf(inicio));
             }
             
@@ -152,7 +153,7 @@ public class MenorCaminho {
     * @param nuvem lista que guarda os indices que jÃ¡ foram utilizados. 
     * @return o indice do menor valor da lista e que ainda nÃ£o foi utilizado.
     */
-    private int menorDistancia(List<Integer> distancias,List<Integer> nuvem) {
+    private int menorDistancia(List<Integer> distancias, List<Integer> nuvem) {
         
         int menorDistancia = Integer.MAX_VALUE;
         int posicao = -1;

@@ -64,7 +64,7 @@ public class Grafo {
         this.listArestas = new ArrayList<>();
     }
     
-    public final void adcionaVertice(String nome, String tipo)
+    public void adcionaVertice(String nome, String tipo)
     {
         Vertice v = new Vertice(tipo, nome);
         
@@ -77,7 +77,7 @@ public class Grafo {
         this.numVertices++;
     }
     
-    public final void adcionaVertice(String nome, String tipo, List<Aresta> arestas)
+    public void adcionaVertice(String nome, String tipo, List<Aresta> arestas)
     {
         Vertice v = new Vertice(tipo, nome);
         
@@ -97,7 +97,7 @@ public class Grafo {
      * @param v vertice de destino
      * @param peso peso da aresta
      */
-    public final void adicionaAresta(Vertice u, Vertice v, int peso)
+    public void adicionaAresta(Vertice u, Vertice v, int peso)
     {
         if(!verificaVertice(u))
             throw new IndexOutOfBoundsException("Vertice de origem fora da faixa");
@@ -108,8 +108,8 @@ public class Grafo {
         Aresta a = new Aresta(peso, u, v);
         Aresta b = new Aresta(peso, v, u);
         
-        this.get( u.getNome() ).getListaAdjacencias().add( 0, a );//aresta (u,v)
-        this.get( v.getNome() ).getListaAdjacencias().add( 0, b );//aresta (v,u)
+        u.getListaAdjacencias().add( 0, a );//aresta (u,v)
+        v.getListaAdjacencias().add( 0, b );//aresta (v,u)
         
         this.listArestas.add(a);
         this.numArestas++;

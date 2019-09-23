@@ -20,6 +20,7 @@ public class GrafoTeste
     private Grafo grafo;
     private Vertice v1, v2, v3, v4, v5;
     private Aresta a1, a2, a3, a4, a5;
+    private Dijkstra dijkstra;
     
     /**
      * Este método é executado antes de cada teste de unidade (testes a seguir),
@@ -32,9 +33,10 @@ public class GrafoTeste
         v1 = new Vertice("estacionamento", "A");
         v2 = new Vertice("origem", "B");
         v3 = new Vertice("chegada", "C");
+        
         a1 = new Aresta(10, v1, v2);
-        a2 = new Aresta(8, v1, v3);
-        a3 = new Aresta(12, v2, v3);
+        a2 = new Aresta(14, v1, v3);
+        a3 = new Aresta(3, v2, v3);
     }
     
     /**
@@ -122,9 +124,22 @@ public class GrafoTeste
     @Test
     public void testMenorCaminho() 
     {
-        this.testInserirAresta();
+        grafo.adcionaVertice(v1.getNome(), v1.getTipo());
+        grafo.adcionaVertice(v2.getNome(), v2.getTipo());
+        grafo.adcionaVertice(v3.getNome(), v3.getTipo());
         
-        grafo.dijkstra();
+        grafo.adicionaAresta(v1, v2, a1.getPeso());
+        grafo.adicionaAresta(v1, v3, a2.getPeso());
+        grafo.adicionaAresta(v2, v3, a3.getPeso());
+        
+        
+        dijkstra = new Dijkstra(grafo);
+        dijkstra.executar(v1);
+        dijkstra.getCaminho(grafo.getAdj(), v3);
+        
+        assertEquals(13, dijkstra.getDistancia(v1, v3));
+        
+        //grafo.dijkstra();
         
     }
     

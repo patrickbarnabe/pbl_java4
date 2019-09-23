@@ -35,7 +35,7 @@ public class Dijkstra {
      * @param g grafo
      */
     public Dijkstra(Grafo g) {
-        this.listadeArestas = new ArrayList<>(g.getNumArestas());
+        this.listadeArestas = new ArrayList<>(g.getListArestas());
     }
 
     /**
@@ -68,6 +68,7 @@ public class Dijkstra {
     {
         List<Vertice> verticesAdjacentes = this.getVizinhos(vertice);
         ArrayList<Vertice> listAuxiliar;
+        
         for (Vertice auxVertice : verticesAdjacentes) {
             if (this.getMenorDistancia(auxVertice) > this.getMenorDistancia(vertice) + this.getDistancia(vertice, auxVertice)) {
                 this.peso.put(auxVertice, this.getMenorDistancia(vertice) + this.getDistancia(vertice, auxVertice));
@@ -88,8 +89,10 @@ public class Dijkstra {
      * @param verticeDestino vertice que deseja chegar
      * @return peso da aresta
      */
-    public int getDistancia(Vertice verticeOrigem, Vertice verticeDestino) {
-        for (Aresta arestaAuxiliar : this.listadeArestas) {
+    public int getDistancia(Vertice verticeOrigem, Vertice verticeDestino) 
+    {
+        for (Aresta arestaAuxiliar : this.listadeArestas) 
+        {
             if (arestaAuxiliar.getVerticeOrigem().equals(verticeOrigem) && arestaAuxiliar.getVerticeDestino().equals(verticeDestino)) {
                 return arestaAuxiliar.getPeso();
             }
@@ -163,7 +166,8 @@ public class Dijkstra {
      * @param vertice vertice
      * @return lista de vertices do caminho percorrido
      */
-    public List<List<Vertice>> getCaminho(List<Vertice> listVertices, Vertice vertice) {
+    public List<List<Vertice>> getCaminho(List<Vertice> listVertices, Vertice vertice) 
+    {
         if (listVertices == null) {
             listVertices = new ArrayList<>();
         }
@@ -177,8 +181,8 @@ public class Dijkstra {
         }
 
         caminho.add(auxVertice);
-        while (this.anteriores.get(auxVertice) != null) {
-
+        while (this.anteriores.get(auxVertice) != null) 
+        {
             auxListVertice = this.anteriores.get(auxVertice);
 
             if (auxListVertice.size() > 1) {

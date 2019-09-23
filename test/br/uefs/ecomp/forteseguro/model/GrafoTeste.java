@@ -19,8 +19,8 @@ import org.junit.Test;
 public class GrafoTeste 
 {
     private Grafo grafo;
-    private Vertice v1, v2, v3, v4, v5;
-    private Aresta a1, a2, a3, a4, a5;
+    private Vertice v1, v2, v3, v4, v5, v6, v7;
+    private Aresta a1, a2, a3, a4, a5, a6, a7, a8;
     private Dijkstra dijkstra;
     
     /**
@@ -34,10 +34,19 @@ public class GrafoTeste
         v1 = new Vertice("estacionamento", "A");
         v2 = new Vertice("origem", "B");
         v3 = new Vertice("chegada", "C");
+        v4 = new Vertice("estacionamento", "D");
+        v5 = new Vertice("origem", "E");
+        v6 = new Vertice("chegada", "F");
+        v6 = new Vertice("chegada", "G");
         
         a1 = new Aresta(10, v1, v2);
         a2 = new Aresta(14, v1, v3);
         a3 = new Aresta(3, v2, v3);
+        a4 = new Aresta(10, v1, v2);
+        a5 = new Aresta(14, v1, v3);
+        a6 = new Aresta(3, v2, v3);
+        a7 = new Aresta(10, v1, v2);
+        a8 = new Aresta(14, v1, v3);
     }
     
     /**
@@ -116,35 +125,6 @@ public class GrafoTeste
         grafo.removerAresta(v1, v2);        
         grafo.removerAresta(v3, v1);
         grafo.removerAresta(v3, v2);
-        
-    }
-    
-    /**
-     * Teste resposavel por verificar o menor caminho entre dois vertices
-     */
-    @Test
-    public void testMenorCaminho() 
-    {
-        grafo.adcionaVertice(v1.getNome(), v1.getTipo());
-        grafo.adcionaVertice(v2.getNome(), v2.getTipo());
-        grafo.adcionaVertice(v3.getNome(), v3.getTipo());
-        
-        grafo.adicionaAresta(v1, v2, a1.getPeso());
-        grafo.adicionaAresta(v1, v3, a2.getPeso());
-        grafo.adicionaAresta(v2, v3, a3.getPeso());
-        
-        grafo.adicionaAresta(v2, v1, a1.getPeso());
-        grafo.adicionaAresta(v3, v1, a2.getPeso());
-        grafo.adicionaAresta(v3, v2, a3.getPeso());
-        
-        
-        dijkstra = new Dijkstra(grafo);
-        dijkstra.executar(v1);
-        dijkstra.getCaminho(grafo.getAdj(), v3);
-        
-        List<List<Vertice>> l = dijkstra.getCaminho(grafo.getAdj(), v2);
-        
-        //grafo.dijkstra();
         
     }
     

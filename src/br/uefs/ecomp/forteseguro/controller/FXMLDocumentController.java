@@ -220,21 +220,36 @@ public class FXMLDocumentController implements Initializable {
         if( !edt_pontoColeta.getText().isEmpty() && !edt_pontoBanco.getText().isEmpty() )
         {
             if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null && this.grafo.getEstacionamento() != null )
-            {
-                //List listColeta = this.grafo.dijkstra().Dijkstra(edt_pontoColeta.getText());
-                //List listBanco = this.grafo.dijkstra().Dijkstra(edt_pontoBanco.getText());
+            {                
+                txt_caminho.setText( "" );
                 
                 Dijkstra d = new Dijkstra(grafo);
-                d.executar(this.grafo.getEstacionamento());
                 
-                List listColeta = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoColeta.getText()));
-                List listBanco = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText()));
+                d.executar(this.grafo.getEstacionamento());
+                List listColeta = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoColeta.getText())).get(0);
+                
+                Dijkstra e = new Dijkstra(grafo);
+                
+                e.executar(this.grafo.getEstacionamento());
+                List listBanco = e.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText())).get(0);
                 
                 for( Object coleta : listColeta )
-                    txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );
+                    if( !((Vertice)coleta).getNome().equals(edt_pontoColeta.getText()) )
+                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + " -> " );
+                    else if( ((Vertice)coleta).getNome().equals(edt_pontoColeta.getText()) )
+                    {
+                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );
+                        break;
+                    }
                 
                 for( Object banco : listBanco )
-                    txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + "\n" );
+                    if( !((Vertice)banco).getNome().equals(edt_pontoBanco.getText()) )
+                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + " -> " );
+                    else if( ((Vertice)banco).getNome().equals(edt_pontoBanco.getText()) )
+                    {
+                       txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + "\n" );
+                       break;
+                    }
                 
                 txt_nomeCaminhoLabel.setVisible(true);
             }

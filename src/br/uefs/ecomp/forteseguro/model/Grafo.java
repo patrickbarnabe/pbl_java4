@@ -265,18 +265,26 @@ public class Grafo {
                     
                     String categoria = "";
                     
-                    if( Integer.parseInt(textoSeparado[0]) == 0 )
-                        categoria = "estacionamento";
-                    else if( Integer.parseInt(textoSeparado[0]) == 1 )
-                        categoria = "coleta";
-                    else if( Integer.parseInt(textoSeparado[0]) == 2 )
-                        categoria = "banco";
+                    switch( Integer.parseInt(textoSeparado[0]) ){
+                        case 0:
+                            categoria = "estacionamento";
+                            break;
+                        case 2:
+                            categoria = "coleta";
+                            break;
+                        case 1:
+                            categoria = "banco";
+                            break;
+                        default:
+                            categoria = "cruzamento";
+                            break;
+                    }
                     
                     String nome = textoSeparado[1];
                     String x = textoSeparado [2];
                     String y = textoSeparado[3];
                     System.out.println(Arrays.toString(textoSeparado));
-                    //Vertice vertice = new Vertice(categoria,nome,x,y);
+                    
                     this.adcionaVertice(nome, categoria);
                 }
                 else

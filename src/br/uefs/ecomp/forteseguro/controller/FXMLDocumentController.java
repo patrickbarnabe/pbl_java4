@@ -6,6 +6,7 @@
 package br.uefs.ecomp.forteseguro.controller;
 
 import br.uefs.ecomp.forteseguro.model.Aresta;
+import br.uefs.ecomp.forteseguro.model.Dijkstra;
 import br.uefs.ecomp.forteseguro.model.Grafo;
 import br.uefs.ecomp.forteseguro.model.MenorCaminho;
 import br.uefs.ecomp.forteseguro.model.Vertice;
@@ -220,8 +221,14 @@ public class FXMLDocumentController implements Initializable {
         {
             if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null && this.grafo.getEstacionamento() != null )
             {
-                List listColeta = this.grafo.dijkstra().Dijkstra(edt_pontoColeta.getText());
-                List listBanco = this.grafo.dijkstra().Dijkstra(edt_pontoBanco.getText());
+                //List listColeta = this.grafo.dijkstra().Dijkstra(edt_pontoColeta.getText());
+                //List listBanco = this.grafo.dijkstra().Dijkstra(edt_pontoBanco.getText());
+                
+                Dijkstra d = new Dijkstra(grafo);
+                d.executar(this.grafo.getEstacionamento());
+                
+                List listColeta = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoColeta.getText()));
+                List listBanco = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText()));
                 
                 for( Object coleta : listColeta )
                     txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );

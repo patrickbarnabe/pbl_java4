@@ -5,6 +5,7 @@
  */
 package br.uefs.ecomp.forteseguro.model;
 
+import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -132,12 +133,16 @@ public class GrafoTeste
         grafo.adicionaAresta(v1, v3, a2.getPeso());
         grafo.adicionaAresta(v2, v3, a3.getPeso());
         
+        grafo.adicionaAresta(v2, v1, a1.getPeso());
+        grafo.adicionaAresta(v3, v1, a2.getPeso());
+        grafo.adicionaAresta(v3, v2, a3.getPeso());
+        
         
         dijkstra = new Dijkstra(grafo);
         dijkstra.executar(v1);
         dijkstra.getCaminho(grafo.getAdj(), v3);
         
-        assertEquals(13, dijkstra.getDistancia(v1, v3));
+        List<List<Vertice>> l = dijkstra.getCaminho(grafo.getAdj(), v2);
         
         //grafo.dijkstra();
         

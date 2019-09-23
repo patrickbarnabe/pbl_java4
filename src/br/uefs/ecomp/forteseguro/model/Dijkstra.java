@@ -42,7 +42,8 @@ public class Dijkstra {
      * 
      * @param inicial (a primicia dos vertices)
      */
-    public void executar(Vertice inicial) {
+    public void executar(Vertice inicial) 
+    {
         this.listaCaminho = new ArrayList<>();
         this.verticesVisitados = new HashSet<>();
         this.verticesNaoVisitados = new HashSet<>();
@@ -63,7 +64,8 @@ public class Dijkstra {
      * 
      * @param vertice vertice 
      */
-    private void menorDistancia(Vertice vertice) {
+    private void menorDistancia(Vertice vertice) 
+    {
         List<Vertice> verticesAdjacentes = this.getVizinhos(vertice);
         ArrayList<Vertice> listAuxiliar;
         for (Vertice auxVertice : verticesAdjacentes) {

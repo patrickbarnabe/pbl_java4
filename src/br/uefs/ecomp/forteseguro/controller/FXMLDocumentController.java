@@ -230,7 +230,7 @@ public class FXMLDocumentController implements Initializable {
                 
                 Dijkstra e = new Dijkstra(grafo);
                 
-                e.executar(this.grafo.getEstacionamento());
+                e.executar(this.grafo.get(edt_pontoColeta.getText()));
                 List listBanco = e.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText())).get(0);
                 
                 for( Object coleta : listColeta )

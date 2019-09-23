@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.uefs.ecomp.forteseguro.controller.FXMLDocumentController">
+    
+    <children>
+      <TabPane prefHeight="400.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="tab_inicio" text="Iníco">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="317.0">
+                     <children>
+                        <TextField fx:id="edt_nomeArquivo" alignment="CENTER" layoutX="96.0" layoutY="173.0" prefHeight="25.0" prefWidth="398.0" promptText="Nome do Arquivo" />
+                        <Button fx:id="btn_inserirArquivo" layoutX="511.0" layoutY="173.0" mnemonicParsing="false" onAction="#inserirArquivo" text="Inserir Arquivo" />
+                        <Label layoutX="20.0" layoutY="24.0" text="Forte Seguros">
+                           <font>
+                              <Font name="System Bold Italic" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tab_inserir" text="Inserir">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="edt_peso_listAdj" accessibleText="Insira um valor positivo e maior que zero" alignment="CENTER" layoutX="196.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Peso" />
+                        <TextField fx:id="edt_destino_listAdj" alignment="CENTER" layoutX="322.0" layoutY="192.0" prefHeight="25.0" prefWidth="120.0" promptText="Destino" />
+                        <TextField fx:id="edt_inserir_verticeTipo" alignment="CENTER" layoutX="195.0" layoutY="127.0" prefHeight="25.0" prefWidth="280.0" promptText="Tipo" />
+                        <Label layoutX="254.0" layoutY="51.0" text="Inserir Pontos e Ligações">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btn_inserirVertice" layoutX="261.0" layoutY="243.0" mnemonicParsing="false" onAction="#inserirVertice" prefHeight="25.0" prefWidth="150.0" text="Inserir" />
+                        <TextField fx:id="edt_inserir_verticeNome" alignment="CENTER" layoutX="196.0" layoutY="91.0" prefHeight="25.0" prefWidth="280.0" promptText="Nome" />
+                        <Label layoutX="260.0" layoutY="167.0" text="Inserir Ligações (Opcional)" />
+                        <Button fx:id="btn_inserirAdj" layoutX="450.0" layoutY="192.0" mnemonicParsing="false" onAction="#inserirAdj" prefHeight="17.0" prefWidth="18.0" text="+">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="txt_arestas" layoutX="502.0" layoutY="196.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+          </Tab>
+            <Tab fx:id="tab_remover" disable="true" text="Remover">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="edt_remover_verticeOrigem" alignment="CENTER" layoutX="126.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Origem" />
+                        <TextField fx:id="edt_remover_verticeDestino" alignment="CENTER" layoutX="271.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Destino" />
+                        <Label layoutX="260.0" layoutY="35.0" text="Remover Pontos e Ligações">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btn_removerVertice" layoutX="425.0" layoutY="108.0" mnemonicParsing="false" onAction="#removerVertice" prefHeight="25.0" prefWidth="150.0" text="Remover Ponto" />
+                        <TextField fx:id="edt_remover_nomeVertice" alignment="CENTER" layoutX="126.0" layoutY="108.0" prefHeight="25.0" prefWidth="278.0" promptText="Nome do Ponto" />
+                        <Button fx:id="btn_removerAresta" layoutX="425.0" layoutY="181.0" mnemonicParsing="false" onAction="#removerAresta" prefHeight="25.0" prefWidth="150.0" text="Remover Ligação" />
+                        <Label layoutX="126.0" layoutY="71.0" text="Remover Ponto">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="126.0" layoutY="148.0" text="Remover Ligação">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tab_calcular" disable="true" text="Calcular Caminho">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="edt_pontoColeta" alignment="CENTER" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Coleta" />
+                        <Button fx:id="btn_calcularMenorCaminho" disable="true" layoutX="332.0" layoutY="69.0" mnemonicParsing="false" onAction="#calcularMenorCaminho" prefHeight="25.0" prefWidth="94.0" text="Calcular" />
+                        <Label fx:id="txt_nomeCaminhoLabel" layoutX="39.0" layoutY="111.0" text="Caminho:" visible="false">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="txt_caminho" layoutX="39.0" layoutY="145.0" />
+                        <Label layoutX="36.0" layoutY="28.0" text="Caminho entre dois Locais">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="edt_pontoBanco" alignment="CENTER" layoutX="184.0" layoutY="69.0" prefHeight="25.0" prefWidth="135.0" promptText="Banco" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+    </children>
+</AnchorPane>

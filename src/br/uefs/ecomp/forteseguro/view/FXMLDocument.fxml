@@ -57,8 +57,8 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="edt_remover_verticeOrigem" alignment="CENTER" layoutX="126.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Origem" />
-                        <TextField fx:id="edt_remover_verticeDestino" alignment="CENTER" layoutX="271.0" layoutY="181.0" prefHeight="25.0" prefWidth="135.0" promptText="Destino" />
+                        <TextField fx:id="edt_remover_verticeOrigem" alignment="CENTER" layoutX="126.0" layoutY="219.0" prefHeight="25.0" prefWidth="135.0" promptText="Origem" />
+                        <TextField fx:id="edt_remover_verticeDestino" alignment="CENTER" layoutX="271.0" layoutY="219.0" prefHeight="25.0" prefWidth="135.0" promptText="Destino" />
                         <Label layoutX="260.0" layoutY="35.0" text="Remover Pontos e Ligações">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -66,17 +66,18 @@
                         </Label>
                         <Button fx:id="btn_removerVertice" layoutX="425.0" layoutY="108.0" mnemonicParsing="false" onAction="#removerVertice" prefHeight="25.0" prefWidth="150.0" text="Remover Ponto" />
                         <TextField fx:id="edt_remover_nomeVertice" alignment="CENTER" layoutX="126.0" layoutY="108.0" prefHeight="25.0" prefWidth="278.0" promptText="Nome do Ponto" />
-                        <Button fx:id="btn_removerAresta" layoutX="425.0" layoutY="181.0" mnemonicParsing="false" onAction="#removerAresta" prefHeight="25.0" prefWidth="150.0" text="Remover Ligação" />
+                        <Button fx:id="btn_removerAresta" layoutX="425.0" layoutY="219.0" mnemonicParsing="false" onAction="#removerAresta" prefHeight="25.0" prefWidth="150.0" text="Remover Ligação" />
                         <Label layoutX="126.0" layoutY="71.0" text="Remover Ponto">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="126.0" layoutY="148.0" text="Remover Ligação">
+                        <Label layoutX="126.0" layoutY="186.0" text="Remover Ligação">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
+                        <Button fx:id="btn_novoEstacionamento" layoutX="268.0" layoutY="152.0" mnemonicParsing="false" text="Inserir novo Estacionamento" visible="false" />
                      </children>
                   </AnchorPane>
                </content>

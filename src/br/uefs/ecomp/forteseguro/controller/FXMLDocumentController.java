@@ -8,11 +8,11 @@ package br.uefs.ecomp.forteseguro.controller;
 import br.uefs.ecomp.forteseguro.model.Aresta;
 import br.uefs.ecomp.forteseguro.model.Dijkstra;
 import br.uefs.ecomp.forteseguro.model.Grafo;
-import br.uefs.ecomp.forteseguro.model.MenorCaminho;
 import br.uefs.ecomp.forteseguro.model.Vertice;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -36,10 +37,13 @@ public class FXMLDocumentController implements Initializable {
     List<Aresta> listTempAdj = new LinkedList();
     
     @FXML
-    private Tab tab_inserir, tab_remover, tab_calcular;
+    String novoEstacionamento = "";
     
     @FXML
-    private Button btn_calcularMenorCaminho, btn_inserirAdj;
+    private Tab tab_inserir, tab_remover, tab_calcular, tab_inicio;
+    
+    @FXML
+    private Button btn_calcularMenorCaminho, btn_inserirAdj, btn_removerVertice, btn_novoEstacionamento;
     
     @FXML
     private TextField edt_peso_listAdj, edt_destino_listAdj, 
@@ -51,6 +55,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label txt_arestas, txt_caminho, txt_nomeCaminhoLabel;
     
+    /**
+     * Metodo reponsavel por inserir um vertice no grafo
+     * @param event 
+     */
     @FXML
     private void inserirVertice(ActionEvent event) 
     {
@@ -98,6 +106,10 @@ public class FXMLDocumentController implements Initializable {
     
     }
     
+    /**
+     * Metodo resposavel por criar uma ligação entre dois vertices do grafo
+     * @param event 
+     */
     @FXML
     private void inserirAdj(ActionEvent event) 
     {
@@ -137,6 +149,10 @@ public class FXMLDocumentController implements Initializable {
             Alerts.showAlert("Error Campo de Text", null, "Preencha um valor inteiro positvo para o campo de texto Peso", Alert.AlertType.ERROR);
     }
     
+    /**
+     * Metodo responsavel por remover uma aresta do grafo
+     * @param event 
+     */
     @FXML
     private void removerAresta(ActionEvent event) 
     {
@@ -177,14 +193,56 @@ public class FXMLDocumentController implements Initializable {
             Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Vertice Destino", Alert.AlertType.ERROR);
     }
     
+    /**
+     * Metodo responsavel por remover um vertice do grafo
+     * @param event 
+     */
     @FXML
     private void removerVertice(ActionEvent event) 
     {
         if( !edt_remover_nomeVertice.getText().isEmpty() && grafo.get( edt_remover_nomeVertice.getText() ) != null )
         {
-            Vertice v = grafo.get( edt_remover_nomeVertice.getText() );
-            grafo.removerVertice( v );
-            edt_remover_nomeVertice.clear();
+            Vertice vertice = grafo.get( edt_remover_nomeVertice.getText() );
+            if( vertice.getTipo().equals("estacionamento") )
+            {
+                grafo.removerVertice( vertice );
+                edt_remover_nomeVertice.clear();
+                tab_calcular.setDisable(true);
+                tab_inserir.setDisable(true);
+                tab_inicio.setDisable(true);
+                btn_novoEstacionamento.setVisible(true);
+                
+                List<String> list = new ArrayList<String>();
+                
+                for( Vertice nomeV : this.grafo.getAdj() )
+                    if( !nomeV.getTipo().equals("estacionamento") )
+                        list.add(nomeV.getNome());
+                
+                btn_novoEstacionamento.setOnAction(e -> {
+                    // o primeiro parâmetro é a escola padrão e os outros são os valores da Choice Box
+                    ChoiceDialog dialogoRegiao = new ChoiceDialog();
+                    
+                    dialogoRegiao.getItems().addAll(list);
+                    dialogoRegiao.setTitle("Inserir novo Estacionamento");
+                    dialogoRegiao.setHeaderText("Vertices cadastrados");
+                    dialogoRegiao.setContentText("Vertices:");
+                    dialogoRegiao.showAndWait().ifPresent(r -> novoEstacionamento = r.toString() );
+                    
+                    if( !novoEstacionamento.equals("") )
+                    {
+                        this.grafo.setEstacionamento( this.grafo.get( novoEstacionamento ) );
+                        this.grafo.get( novoEstacionamento ).setTipo("estacionamento");
+                        tab_calcular.setDisable(false);
+                        tab_inserir.setDisable(false);
+                        tab_inicio.setDisable(false);
+                        btn_novoEstacionamento.setVisible(false);
+                    }
+                });
+            }
+            else{
+                grafo.removerVertice( vertice );
+                edt_remover_nomeVertice.clear();
+            }
         }
         else if( edt_remover_nomeVertice.getText().isEmpty() )
             Alerts.showAlert("Error Campo de Text", null, "Preencha um valor para o campo de texto Nome do Vertice", Alert.AlertType.ERROR);
@@ -192,6 +250,11 @@ public class FXMLDocumentController implements Initializable {
             Alerts.showAlert("Error Vertice", null, "O ponto não existe", Alert.AlertType.ERROR);
     }
     
+    /**
+     * Metodo responsavel por inserir o arquivo com os dados do grafo
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void inserirArquivo(ActionEvent event) throws IOException 
     {
@@ -214,45 +277,65 @@ public class FXMLDocumentController implements Initializable {
         } 
     }
     
+    /**
+     * Metodo responsavel por calcular o menor caminho do grafo e enviar este caminho
+     * para a view
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void calcularMenorCaminho(ActionEvent event) throws IOException 
     {
         if( !edt_pontoColeta.getText().isEmpty() && !edt_pontoBanco.getText().isEmpty() )
         {
-            if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoBanco.getText()) != null && this.grafo.getEstacionamento() != null )
+            if( this.grafo.get(edt_pontoColeta.getText()) != null && this.grafo.get(edt_pontoColeta.getText()).getTipo().equals("coleta") &&
+                    this.grafo.get(edt_pontoBanco.getText()) != null && this.grafo.get(edt_pontoBanco.getText()).getTipo().equals("banco")
+                    && this.grafo.getEstacionamento() != null )
             {                
                 txt_caminho.setText( "" );
                 
-                Dijkstra d = new Dijkstra(grafo);
-                
-                d.executar(this.grafo.getEstacionamento());
-                List listColeta = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoColeta.getText())).get(0);
-                
-                Dijkstra e = new Dijkstra(grafo);
-                
-                e.executar(this.grafo.get(edt_pontoColeta.getText()));
-                List listBanco = e.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText())).get(0);
-                
-                for( Object coleta : listColeta )
-                    if( !((Vertice)coleta).getNome().equals(edt_pontoColeta.getText()) )
-                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + " -> " );
-                    else if( ((Vertice)coleta).getNome().equals(edt_pontoColeta.getText()) )
-                    {
-                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );
-                        break;
-                    }
-                
-                for( Object banco : listBanco )
-                    if( !((Vertice)banco).getNome().equals(edt_pontoBanco.getText()) )
-                        txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + " -> " );
-                    else if( ((Vertice)banco).getNome().equals(edt_pontoBanco.getText()) )
-                    {
-                       txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + "\n" );
-                       break;
-                    }
-                
-                txt_nomeCaminhoLabel.setVisible(true);
+                try
+                {
+                    Dijkstra d = new Dijkstra(grafo);
+
+                    d.executar(this.grafo.getEstacionamento());
+                    List listColeta = d.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoColeta.getText())).get(0);
+
+                    Dijkstra e = new Dijkstra(grafo);
+
+                    e.executar(this.grafo.get(edt_pontoColeta.getText()));
+                    List listBanco = e.getCaminho(this.grafo.getAdj(), this.grafo.get(edt_pontoBanco.getText())).get(0);
+
+                    for( Object coleta : listColeta )
+                        if( !((Vertice)coleta).getNome().toLowerCase().equals(edt_pontoColeta.getText().toLowerCase()) )
+                            txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + " -> " );
+                        else if( ((Vertice)coleta).getNome().toLowerCase().equals(edt_pontoColeta.getText().toLowerCase()) )
+                        {
+                            txt_caminho.setText( txt_caminho.getText() + ((Vertice)coleta).getNome() + "\n" );
+                            break;
+                        }
+
+                    for( Object banco : listBanco )
+                        if( !((Vertice)banco).getNome().toLowerCase().equals(edt_pontoBanco.getText().toLowerCase()) )
+                            txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + " -> " );
+                        else if( ((Vertice)banco).getNome().toLowerCase().equals(edt_pontoBanco.getText().toLowerCase()) )
+                        {
+                           txt_caminho.setText( txt_caminho.getText() + ((Vertice)banco).getNome() + "\n" );
+                           break;
+                        }
+
+                    txt_nomeCaminhoLabel.setVisible(true);
+                    
+                }catch( NullPointerException e ){
+                    Alerts.showAlert("Error", null, "Não existe uma ligação entre os dois pontos informados", Alert.AlertType.ERROR);
+                    edt_pontoBanco.clear();
+                    edt_pontoColeta.clear();
+                }
             }
+            else if( !this.grafo.get(edt_pontoBanco.getText()).getTipo().equals("banco") )
+                Alerts.showAlert("Error", null, "O Ponto informado não é um ponto de Banco", Alert.AlertType.ERROR);
+            else if( !this.grafo.get(edt_pontoColeta.getText()).getTipo().equals("coleta") )
+                Alerts.showAlert("Error", null, "O Ponto informado não é um ponto de Coleta", Alert.AlertType.ERROR);
             else if( this.grafo.get(edt_pontoColeta.getText()) == null )
                 Alerts.showAlert("Error", null, "Ponto de coleta não existente", Alert.AlertType.ERROR);
             else if( this.grafo.get(edt_pontoBanco.getText()) == null )

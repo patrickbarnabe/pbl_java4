@@ -17,6 +17,7 @@ package br.uefs.ecomp.forteseguro.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -71,6 +72,33 @@ public class Vertice {
     */
     public void visitar(){
         this.visitado = true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vertice other = (Vertice) obj;
+        if (this.visitado != other.visitado) {
+            return false;
+        }
+        if (!Objects.equals(this.tipo, other.tipo)) {
+            return false;
+        }
+        if (!Objects.equals(this.nome, other.nome)) {
+            return false;
+        }
+        if (!Objects.equals(this.listaAdjacencias, other.listaAdjacencias)) {
+            return false;
+        }
+        return true;
     }
     
 }

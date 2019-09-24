@@ -316,17 +316,6 @@ public class Grafo {
             rd.close();
         }
     }
-    
-    public MenorCaminho dijkstra()
-    {
-        if( this.getEstacionamento() != null )
-        {
-            MenorCaminho m = new MenorCaminho(this.getAdj(), this.getListArestas(), this.getEstacionamento());
-            return m;
-        }
-        
-        return null;
-    }
 
     public List<Aresta> getListArestas() {
         return listArestas;

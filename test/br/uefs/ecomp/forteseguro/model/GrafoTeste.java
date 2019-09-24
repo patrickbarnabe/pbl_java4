@@ -1,8 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+* Componente Curricular: Módulo Integrado de Programação II
+ * Autores: <Patrick Barnabé Moreira Santos e Esdras Abreu Silva>
+ * Data:  <23/09/2019>
+ *
+ * Declaro que este código foi elaborado por mim de forma individual e
+ * não contém nenhum trecho de código de outro colega ou de outro autor, 
+ * tais como provindos de livros e apostilas, e páginas ou documentos 
+ * eletrônicos da Internet. Qualquer trecho de código de outra autoria que
+ * uma citação para o  não a minha está destacado com  autor e a fonte do
+ * código, e estou ciente que estes trechos não serão considerados para fins
+ * de avaliação. Alguns trechos do código podem coincidir com de outros
+ * colegas pois estes foram discutidos em sessões tutorias.
  */
+
 package br.uefs.ecomp.forteseguro.model;
 
 import java.util.List;
@@ -14,7 +24,7 @@ import org.junit.Test;
 
 /**
  *
- * @author xstri
+ * @author Patrick e Esdras
  */
 public class GrafoTeste 
 {
